@@ -698,12 +698,6 @@ void World::DeallocatePhysics(){
 
 RavEngine::World::MDICommandBase::~MDICommandBase()
 {
-    if (auto app = GetApp()) {
-        auto& gcBuffers = app->GetRenderEngine().gcBuffers;
-        gcBuffers.enqueue(indirectBuffer);
-        gcBuffers.enqueue(cullingBuffer);
-        gcBuffers.enqueue(indirectStagingBuffer);
-    }
   
 }
 #endif

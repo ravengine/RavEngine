@@ -12,6 +12,8 @@ layout(push_constant, std430) uniform UniformBufferObject{
     uint isSingleInstanceModeAndShadowMode; // LSB is single instance mode, bit 2 is shadow mode
     uint numLODs;
     uint cameraRenderLayers;
+    uint globalCullingBufferOffset;
+    uint globalIndirectBufferOffset;
 } ubo;
 
 layout(std430, binding = 0) readonly buffer idBuffer
@@ -286,11 +288,11 @@ void main() {
         }
 
         // atomic-increment the instance count and write the entity ID into the output ID buffer based on the previous value of the instance count
-		uint idx = atomicAdd(indirectBuffer[ubo.indirectBufferOffset + lodID + isSingleInstanceMode * gl_GlobalInvocationID.x].instanceCount,1);
+		uint idx = atomicAdd(indirectBuffer[ubo.globalIndirectBufferOffset + ubo.indirectBufferOffset + lodID + isSingleInstanceMode * gl_GlobalInvocationID.x].instanceCount,1);
 		uint idxLODOffset = ubo.numObjects * lodID + ubo.cullingBufferOffset;
 
         uint cullingSingleObjectModeOffset = gl_GlobalInvocationID.x * isSingleInstanceMode; 
-		entityIDsToRender[idx + idxLODOffset + cullingSingleObjectModeOffset] = entityID;
+		entityIDsToRender[idx + idxLODOffset + cullingSingleObjectModeOffset + ubo.globalCullingBufferOffset] = entityID;
 	}
 
 }

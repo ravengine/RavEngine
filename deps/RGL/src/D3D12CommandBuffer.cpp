@@ -207,7 +207,10 @@ namespace RGL {
 	{
 		SyncIfNeeded(static_cast<const BufferD3D12*>(buffer.get()), D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, false);
 
-		commandList->IASetVertexBuffers(bindingInfo.bindingPosition, 1, &std::static_pointer_cast<BufferD3D12>(buffer)->vertexBufferView + bindingInfo.offsetIntoBuffer);
+		auto view = std::static_pointer_cast<BufferD3D12>(buffer)->vertexBufferView;
+		view.BufferLocation += bindingInfo.offsetIntoBuffer;
+		view.SizeInBytes -= bindingInfo.offsetIntoBuffer;
+		commandList->IASetVertexBuffers(bindingInfo.bindingPosition, 1, &view);
 	}
 	void CommandBufferD3D12::SetVertexBytes(const untyped_span data, uint32_t offset)
 	{

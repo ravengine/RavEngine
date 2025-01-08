@@ -193,6 +193,8 @@ namespace RavEngine {
 			uint32_t singleInstanceModeAndShadowMode = 0;	// skinning vs not skinning
 			uint32_t numLODs = 0;
             renderlayer_t cameraRenderLayers = 0;
+			uint32_t globalCullingBufferOffset = 0;
+			uint32_t globalIndirectBufferOffset = 0;
 		};
 
 		struct SkinningPrepareUBO {
