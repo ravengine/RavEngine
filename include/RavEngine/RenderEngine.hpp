@@ -183,16 +183,24 @@ namespace RavEngine {
 			float influence;
 		};
 
-		struct CullingUBO {
-			glm::mat4 viewProj;
-			glm::vec3 camPos;
+		struct CullingUBOinstance {
 			uint32_t indirectBufferOffset = 0;	// needs to be like this because of padding / alignment
 			uint32_t numObjects = 0;
 			uint32_t cullingBufferOffset = 0;
             float radius = 0;
-			uint32_t singleInstanceModeAndShadowMode = 0;	// skinning vs not skinning
 			uint32_t numLODs = 0;
-            renderlayer_t cameraRenderLayers = 0;
+			uint32_t idOutputBufferBindlessHandle = 0;
+			uint32_t entityIDInputBufferBindlessHandle = 0;
+			uint32_t indirectOutputBufferBindlessHandle = 0;
+			uint32_t lodDistanceBufferBindlessHandle = 0;
+		};
+
+		struct CullingUBO {
+			glm::mat4 viewProj;
+			glm::vec3 camPos;
+			uint32_t numCubos;
+			renderlayer_t cameraRenderLayers = 0;
+			uint32_t singleInstanceModeAndShadowMode = 0;	// skinning vs not skinning
 		};
 
 		struct SkinningPrepareUBO {
